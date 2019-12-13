@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">NotePad</string>
+    <string name="title_text">Title</string>
+    <string name="body_text">Notes...</string>
+    <string name="title_activity_home">NotePad</string>
+    <string name="button_save">Save</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="cancel_confirmation">Discard changes?</string>
+</resources>
