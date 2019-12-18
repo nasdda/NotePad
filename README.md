@@ -1,5 +1,6 @@
 # NotePad
 Android Notepad Application
+
 Utilized Room Database and Recycler View.
 
 Video Demo:
