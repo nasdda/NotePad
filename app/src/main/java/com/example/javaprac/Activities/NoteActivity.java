@@ -37,7 +37,7 @@ public class NoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_note);
         title = getIntent().getExtras().getString("title");
         setTitle(title);
-        body = (TextView) findViewById(R.id.bodyText);
+        body = findViewById(R.id.bodyText);
         id = getIntent().getExtras().getLong("ID");
         if(id != 0){
             dbExecutor.execute(()->{
@@ -49,8 +49,8 @@ public class NoteActivity extends AppCompatActivity {
 
         noteActivity = this;
 
-        saveButton = (Button) findViewById(R.id.save_button);
-        cancelButton = (Button) findViewById(R.id.cancel_button);
+        saveButton = findViewById(R.id.save_button);
+        cancelButton = findViewById(R.id.cancel_button);
         intent = new Intent(this, HomeActivity.class);
         saveID = saveButton.getId();
         cancelID = cancelButton.getId();

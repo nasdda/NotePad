@@ -31,9 +31,8 @@ import java.util.concurrent.Executors;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<String> mTitles = new ArrayList<>();
-    private ArrayList<String> mIcons = new ArrayList<>();
-    private ArrayList<Long> primaryId = new ArrayList<>();
+    private ArrayList<String> mTitles;
+    private ArrayList<Long> primaryId;
     private Context mContext;
     Executor dbExecutor = Executors.newSingleThreadExecutor();
 
