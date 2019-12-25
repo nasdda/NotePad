@@ -55,37 +55,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.titleText.setText(mTitles.get(position));
         holder.icon.setImageResource(R.mipmap.ic_launcher);
-        holder.contentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        holder.contentLayout.setOnClickListener(view -> dbExecutor.execute(()->{
+            Intent intent = new Intent(mContext,NoteActivity.class);
+            Bundle extra = new Bundle();
+            extra.putLong("ID", primaryId.get(position));
+            extra.putString("title", mTitles.get(position));
+            intent.putExtras(extra);
+            mContext.startActivity(intent);
+        }));
+        holder.deleteIcon.setOnClickListener(view -> {
+            view.startAnimation(AnimationUtils.loadAnimation(mContext,R.anim.click_anim));
+            AlertDialog.Builder builder = confirmDeletion();
+            builder.setPositiveButton("Delete", (dialogInterface, i) -> {
                 dbExecutor.execute(()->{
-                    Intent intent = new Intent(mContext,NoteActivity.class);
-                    Bundle extra = new Bundle();
-                    extra.putLong("ID", primaryId.get(position));
-                    extra.putString("title", mTitles.get(position));
-                    intent.putExtras(extra);
-                    mContext.startActivity(intent);
+                    NoteDatabase.getNoteDatabase(mContext).noteDatabaseDao().delete(primaryId.get(position));
+                    primaryId.remove(position);
                 });
-            }
-        });
-        holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(AnimationUtils.loadAnimation(mContext,R.anim.click_anim));
-                AlertDialog.Builder builder = confirmDeletion();
-                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dbExecutor.execute(()->{
-                            NoteDatabase.getNoteDatabase(mContext).noteDatabaseDao().delete(primaryId.get(position));
-                            primaryId.remove(position);
-                        });
-                        mTitles.remove(position);
-                        notifyDataSetChanged();
-                    }
-                });
-                builder.show();
-            }
+                mTitles.remove(position);
+                notifyDataSetChanged();
+            });
+            builder.show();
         });
     }
 
@@ -116,11 +105,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public AlertDialog.Builder confirmDeletion(){
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setMessage("Delete Note?");
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //do nothing
-            }
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+            //do nothing
         });
         return builder;
     }

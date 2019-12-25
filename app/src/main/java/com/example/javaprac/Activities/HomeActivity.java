@@ -48,12 +48,7 @@ public class HomeActivity extends AppCompatActivity {
             initRecyclerView(new ArrayList<>(entries), new ArrayList<>(ids));
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createNote();
-            }
-        });
+        fab.setOnClickListener(view -> createNote());
     }
 
     // Shows dialog to ask for title of new note
@@ -64,26 +59,18 @@ public class HomeActivity extends AppCompatActivity {
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel());
 
-        builder.setPositiveButton("Create", new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String newTitle = input.getText().toString();
-                if(!newTitle.trim().isEmpty()){
-                    Intent intent = new Intent(getBaseContext(), NoteActivity.class);
-                    Bundle extra = new Bundle();
-                    extra.putString("title",newTitle.trim());
-                    intent.putExtras(extra);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(HomeActivity.this, "Title cannot be empty", Toast.LENGTH_LONG).show();
-                }
+        builder.setPositiveButton("Create", (dialogInterface, i) -> {
+            String newTitle = input.getText().toString();
+            if(!newTitle.trim().isEmpty()){
+                Intent intent = new Intent(getBaseContext(), NoteActivity.class);
+                Bundle extra = new Bundle();
+                extra.putString("title",newTitle.trim());
+                intent.putExtras(extra);
+                startActivity(intent);
+            }else{
+                Toast.makeText(HomeActivity.this, "Title cannot be empty", Toast.LENGTH_LONG).show();
             }
         });
 
